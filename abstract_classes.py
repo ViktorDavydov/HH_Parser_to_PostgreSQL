@@ -11,11 +11,11 @@ class ApiEngine(ABC):
 class JsonManager(ABC):
 
     @abstractmethod
-    def save_to_json(self):
+    def save_to_json(self, json_file_name):
         pass
 
     @abstractmethod
-    def get_json(self):
+    def get_json(self, json_file_name):
         pass
 
 

@@ -26,12 +26,5 @@ class HHApiEngine(ApiEngine):
             response = requests.get(hh_vac_url, params=params, headers=self.headers)
             if response.status_code == 200:
                 vacancies = response.json()
-                if len(vacancies_list) == 0:
-                    vacancies_list.append(vacancies["items"])
-                else:
-                    vacancies_list.extend(vacancies["items"])
-
-            #
-            #     vacancies = response.json()
-
+                vacancies_list.extend(vacancies["items"])
         return vacancies_list
