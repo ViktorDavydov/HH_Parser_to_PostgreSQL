@@ -1,4 +1,5 @@
 def get_empl_items():
+    """Получение словаря с данными о работодателях"""
     empl_items = {
         "СБЕР": "3529",
         "Газпром нефть": "39305",
@@ -12,7 +13,6 @@ def get_empl_items():
         "Битрикс24": "129044"
     }
     return empl_items
-
 
 
 def get_employees_id_list():

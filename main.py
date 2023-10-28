@@ -6,12 +6,12 @@ from db_scriptor import DBScriptor
 from employees_ids import get_empl_items
 from db_manager import DBManager
 
+# Создание переменных с названиями файлов
 json_file_name = 'json_vac_info.json'
 db_name = 'cw5_db'
 ini_config_file = 'database.ini'
 section_params = 'postgresql'
 script_file = 'create_tables_script.sql'
-vacancies_id_dict = get_empl_items()
 
 if __name__ == "__main__":
     print("Привет! Я программа, которая собирает вакансии с лучших компаний HeadHunter!\n"
@@ -35,7 +35,7 @@ if __name__ == "__main__":
     print(f"Запись вакансий в библиотеку прошла успешно")
     json_vac_list = json_instance.get_json(json_file_name)
 
-    params = config(ini_config_file, section_params)  # Создание переменной параметров БД
+    params = config(ini_config_file, section_params)  # Создание переменной параметров доступа к БД
 
     db_script = DBScriptor()
 
@@ -44,7 +44,9 @@ if __name__ == "__main__":
 
     params.update({'dbname': db_name})
 
-    connection = psycopg2.connect(**params)
+    vacancies_id_dict = get_empl_items()  # Достаем словарь с компаниями из employees_ids
+
+    connection = psycopg2.connect(**params)  # Открываем соединение для создания БД
     try:
         with connection as conn:
             with conn.cursor() as cur:
@@ -57,10 +59,13 @@ if __name__ == "__main__":
     finally:
         connection.close()
 
-    connection = psycopg2.connect(**params)
+    connection = psycopg2.connect(**params)  # Открываем соединение для работы с пользователем
+
     with connection as conn:
         with conn.cursor() as cur:
             db_manager = DBManager(cur)
+
+            # Функционал пользователя
             while True:
                 print("\nДоступны следующие действия:\n"
                       "1 - Вывести весь список компаний с указанием "
@@ -94,18 +99,36 @@ if __name__ == "__main__":
                             print(f"{round(db_manager.get_avg_salary(sal_func_input)[0][0])} руб.")
                             break
                         else:
-                            print("Такой функции нет. Выберите из списка\n")
+                            print("Такой функции нет. Выберите из списка!\n")
 
                 if user_func_input == "4":
                     while True:
                         sal_func_input = input("1 - По нижней границе ЗП\n"
                                                "2 - По верхней границе ЗП\n> ")
                         if sal_func_input in ("1", "2"):
-                            print(db_manager.get_vacancies_with_higher_salary(sal_func_input))
+                            valid_vac = db_manager.get_vacancies_with_higher_salary(sal_func_input)
+                            for vac in valid_vac:
+                                print(f"Вакансия: {vac[1]}\nЗарплата: {vac[3]}\nСсылка: {vac[4]}")
+                                print()
                             break
                         else:
-                            print("Такой функции нет. Выберите из списка\n")
+                            print("Такой функции нет. Выберите из списка!\n")
 
+                if user_func_input == "5":
+                    while True:
+                        keyword_input = input("Введите слово, например Менеджер или Водитель, "
+                                              "или введите 0 для выхода:\n> ")
+                        vac_res_list = db_manager.get_vacancies_with_keyword(keyword_input)
+                        if keyword_input == "0":
+                            break
+                        if len(vac_res_list) == 0:
+                            print("С таким словом вакансий нет :(\nПопробуйте снова!\n")
+                        else:
+                            for vac in vac_res_list:
+                                print(f"Вакансия: {vac[2]}\nЗарплата от: {vac[3]}\n"
+                                      f"Зарплата до: {vac[4]}\nСсылка: {vac[5]}")
+                                print()
+                            break
 
                 if user_func_input == "0":
                     print("Пока пока!")

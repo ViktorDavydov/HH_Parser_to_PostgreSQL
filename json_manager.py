@@ -3,7 +3,7 @@ import json
 
 
 class HHJsonManager(JsonManager):
-
+    """Класс создания json файла с вакансиями и получения вакансий"""
     def __init__(self, vacancies_list):
         self.vacancies_list = vacancies_list
 

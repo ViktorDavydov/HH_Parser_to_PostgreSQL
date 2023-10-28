@@ -2,6 +2,7 @@ from configparser import ConfigParser
 
 
 def config(filename, section):
+    """Получение параметров БД из файла конфигурации"""
     # create a parser
     parser = ConfigParser()
     # read config file

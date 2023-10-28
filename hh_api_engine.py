@@ -13,7 +13,7 @@ class HHApiEngine(ApiEngine):
         }
 
     def get_vacancies(self):
-        """Получение всех вакансий компании"""
+        """Получение всех вакансий компаний"""
         vacancies_list = []
         hh_vac_url = self.hh_api_url + "/vacancies"
         employee_list = get_employees_id_list()
@@ -29,4 +29,5 @@ class HHApiEngine(ApiEngine):
                 for item in vacancies["items"]:
                     if item["salary"]["from"] and item["salary"]["to"]:
                         vacancies_list.append(item)
+
         return vacancies_list

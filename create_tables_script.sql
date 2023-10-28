@@ -1,3 +1,7 @@
+---
+--- Tables drops if they exist
+---
+
 DROP TABLE IF EXISTS employers;
 DROP TABLE IF EXISTS vacancies;
 
