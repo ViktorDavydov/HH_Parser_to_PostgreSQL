@@ -26,5 +26,7 @@ class HHApiEngine(ApiEngine):
             response = requests.get(hh_vac_url, params=params, headers=self.headers)
             if response.status_code == 200:
                 vacancies = response.json()
-                vacancies_list.extend(vacancies["items"])
+                for item in vacancies["items"]:
+                    if item["salary"]["from"] and item["salary"]["to"]:
+                        vacancies_list.append(item)
         return vacancies_list

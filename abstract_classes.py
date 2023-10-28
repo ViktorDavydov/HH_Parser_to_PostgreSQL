@@ -19,12 +19,16 @@ class JsonManager(ABC):
         pass
 
 
-class DBCreator(ABC):
+class DBOperator(ABC):
 
     @abstractmethod
-    def create_db(self, db_name):
+    def create_db(self, params, db_name):
         pass
 
     @abstractmethod
-    def execute_sql_script(self, cursor, fill_script_file):
+    def create_tables(self, cursor, fill_script_file):
+        pass
+
+    @abstractmethod
+    def fill_tables(self, cursor, params):
         pass
