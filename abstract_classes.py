@@ -30,5 +30,5 @@ class DBOperator(ABC):
         pass
 
     @abstractmethod
-    def fill_tables(self, cursor, params):
+    def fill_tables(self, cursor, vacancies_dict, vacancies_list):
         pass

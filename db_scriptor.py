@@ -23,15 +23,13 @@ class DBScriptor(DBOperator):
         with open(fill_script_file, 'r') as file:
             cursor.execute(file.read())
 
-    def fill_tables(self, cursor, vacancies_list: list) -> None:
-        for item in vacancies_list:
+    def fill_tables(self, cursor, vacancies_dict: dict, vacancies_list: list):
+        for k_name, v_id in vacancies_dict.items():
             cursor.execute(f"INSERT INTO employers VALUES (%s, %s)",
-                           (int(item['employer']['id']), item['employer']['name']))
+                           (int(v_id), k_name))
 
         for item in vacancies_list:
-            cursor.execute(f"INSERT INTO vacancies VALUES (%s, %s, %s, %s, %s)",
-                           (int(item['id']), item['name'], item['salary']['from'],
-                            item['salary']['to'], item['alternate_url']))
-
-
+            cursor.execute(f"INSERT INTO vacancies VALUES (%s, %s, %s, %s, %s, %s)",
+                           (int(item['id']), int(item['employer']['id']), item['name'],
+                            item['salary']['from'], item['salary']['to'], item['alternate_url']))
 
